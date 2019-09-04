@@ -235,4 +235,39 @@ describe('app routes', () => {
         expect(res.body).toEqual({ avgTemp: expect.any(Number) });
       });
   });
+
+  it('gets the last 10 temps for a location', async() => {
+    const cities = await Location.create([
+      { name: 'Portland' },
+      { name: 'Cleveland' },
+      { name: 'Dayton' },
+      { name: 'Seattle' },
+    ]);
+
+    await Temperature.create([
+      { locationId: cities[1]._id, temp: 80 },
+      { locationId: cities[2]._id, temp: 70 },
+      { locationId: cities[1]._id, temp: 50 },
+      { locationId: cities[3]._id, temp: 60 },
+      { locationId: cities[0]._id, temp: 83 },
+      { locationId: cities[3]._id, temp: 10 },
+      { locationId: cities[1]._id, temp: 20 },
+      { locationId: cities[2]._id, temp: 60 },
+      { locationId: cities[1]._id, temp: 54 },
+    ]);
+
+    return request(app)
+      .get(`/api/v1/temperatures/${cities[1]._id}`)
+      .then(res => {
+        expect(res.body).toEqual(expect.any(Array));
+        expect(res.body[0]).toEqual({
+          _id: expect.any(String),
+          temp: expect.any(Number),
+          locationId: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          __v: 0
+        });
+      });
+  });
 });
