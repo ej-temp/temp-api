@@ -60,4 +60,18 @@ describe('app routes', () => {
         expect(res.body).toEqual({ id: venus._id.toString() });
       });
   });
+
+  it('deletes a location upon deregistration', async() => {
+    const jupiter = await Location.create({ name: 'Jupiter' });
+    return request(app)
+      .delete('/deregister')
+      .send({ id: jupiter._id })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: jupiter._id.toString(),
+          name: 'Jupiter',
+          __v: 0
+        });
+      });
+  });
 });
