@@ -1,6 +1,6 @@
 require('dotenv').config();
 require('./lib/utils/connect')();
-const { subscribe } = require('../lib/services/network');
+const { subscribe } = require('./lib/services/network');
 
 const app = require('./lib/app');
 
