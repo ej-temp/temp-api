@@ -19,10 +19,24 @@ describe('app routes', () => {
     return mongoose.connection.close();
   });
 
-  it('subscibes to the network', () => {
-    return subscribe()
+  // it('subscibes to the network', () => {
+  //   return subscribe()
+  //     .then(res => {
+  //       console.log(res.body);
+  //       expect(res.body).toEqual({
+  //         _id: expect.any(String),
+  //         url: 'https://ej-temp.herokuapp.com/',
+  //         createdAt: expect.any(String),
+  //         updatedAt: expect.any(String)
+  //       });
+  //     });
+  // });
+
+  it('gives its status', () => {
+    return request(app)
+      .get('/status')
       .then(res => {
-        console.log(res);
+        expect(res.status).toEqual(204);
       });
   });
 });
