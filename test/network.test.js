@@ -198,7 +198,7 @@ describe('app routes', () => {
     ]);
 
     return request(app)
-      .get('/api/v1/temperatures/hott est')
+      .get('/api/v1/temperatures/hottest')
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
