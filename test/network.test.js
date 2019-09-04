@@ -74,4 +74,19 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('Adds a temperature', async() => {
+    const portland = await Location.create({ name: 'Portland' });
+    return request(app)
+      .post(`/temp/${portland._id}`)
+      .send({ temperature: 87.5 })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          locationId: portland._id.toString(),
+          temp: 87.5,
+          __v: 0
+        });
+      });
+  });
 });
