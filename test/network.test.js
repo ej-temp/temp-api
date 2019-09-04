@@ -176,4 +176,36 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('gets the hotest current temperature', async() => {
+    const cities = await Location.create([
+      { name: 'Portland' },
+      { name: 'Cleveland' },
+      { name: 'Dayton' },
+      { name: 'Seattle' },
+    ]);
+
+    await Temperature.create([
+      { locationId: cities[1]._id, temp: 80 },
+      { locationId: cities[2]._id, temp: 70 },
+      { locationId: cities[1]._id, temp: 50 },
+      { locationId: cities[3]._id, temp: 60 },
+      { locationId: cities[0]._id, temp: 83 },
+      { locationId: cities[3]._id, temp: 10 },
+      { locationId: cities[1]._id, temp: 20 },
+      { locationId: cities[2]._id, temp: 60 },
+      { locationId: cities[1]._id, temp: 54 },
+    ]);
+
+    return request(app)
+      .get('/api/v1/temperatures/hotest')
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          temp: 83,
+          name: expect.any(String),
+          createdAt: expect.any(String)
+        });
+      });
+  });
 });
