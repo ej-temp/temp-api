@@ -236,7 +236,7 @@ describe('app routes', () => {
       });
   });
 
-  it('gets the last 10 temps for a location', async() => {
+  it('gets the detail for a location', async() => {
     const cities = await Location.create([
       { name: 'Portland' },
       { name: 'Cleveland' },
@@ -259,11 +259,18 @@ describe('app routes', () => {
     return request(app)
       .get(`/api/v1/temperatures/${cities[1]._id}`)
       .then(res => {
-        expect(res.body).toEqual(expect.any(Array));
-        expect(res.body[0]).toEqual({
+        expect(res.body.temps).toEqual(expect.any(Array));
+        expect(res.body.temps[0]).toEqual({
           _id: expect.any(String),
           temp: expect.any(Number),
           locationId: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          __v: 0
+        });
+        expect(res.body.location).toEqual({
+          _id: cities[1]._id.toString(),
+          name: 'Cleveland',
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
           __v: 0
