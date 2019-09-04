@@ -5,6 +5,7 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 // const { subscribe } = require('../lib/services/network');
+const Location = require('../lib/models/Location');
 
 describe('app routes', () => {
   beforeAll(() => {
@@ -37,6 +38,26 @@ describe('app routes', () => {
       .get('/status')
       .then(res => {
         expect(res.status).toEqual(204);
+      });
+  });
+
+  it('registers a location if does not exist', () => {
+    return request(app)
+      .post('/register')
+      .send({ name: 'Mars' })
+      .then(res => {
+        expect(res.body).toEqual({ id: expect.any(String) });
+      });
+  });
+
+  it('registers a location if does not exist', async() => {
+    const venus = await Location.create({ name: 'Venus' });
+
+    return request(app)
+      .post('/register')
+      .send({ name: 'Venus' })
+      .then(res => {
+        expect(res.body).toEqual({ id: venus._id.toString() });
       });
   });
 });
